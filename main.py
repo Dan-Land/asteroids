@@ -15,14 +15,16 @@ def main():
     player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2)
 
     while True:
+        dt = (asteroid_clock.tick(60) / 1000)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
 
         screen.fill("Black")
         player.draw(screen)
+        player.update(dt)
         pygame.display.flip()
-        dt = (asteroid_clock.tick(60) / 1000)
 
 
 if __name__ == "__main__":
