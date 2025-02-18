@@ -27,6 +27,12 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     player = Player(SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2, shots)
 
+    font = pygame.font.Font(None, 36)
+    text_surface = font.render("Game Over!", True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    alive = True
 
     while True:
         dt = (asteroid_clock.tick(60) / 1000)
@@ -35,34 +41,43 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        # screen fill
-        screen.fill("Black")
+    
+        if alive:
+            # screen fill
+            screen.fill("Black")
 
-        # draw sprites
-        for drawing in drawable:
-            drawing.draw(screen)
-        shots.draw(screen)
+            # draw sprites
+            for drawing in drawable:
+                drawing.draw(screen)
+            shots.draw(screen)
 
-        # update sprites
-        updatable.update(dt)
-        player.shot_timer -= dt
-        shots.update(dt)
+            # update sprites
+            updatable.update(dt)
+            player.shot_timer -= dt
+            shots.update(dt)
 
-        # loop through asteroids to see if collision with player
-        for ast in asteroid:
-            if ast.check_collision(player):
-                print("Game over!")
-                sys.exit()
+            # loop through asteroids to see if collision with player
+            for ast in asteroid:
+                if ast.check_collision(player):
+                    print("Game over!")
+                    alive = False
+                    # sys.exit()
+                    
 
-            for shot in shots:
-                # Draw circles around objects to visualize collision bounds
-                pygame.draw.circle(screen, "red", (int(ast.position.x), int(ast.position.y)), ast.radius, 1)
-                pygame.draw.circle(screen, "green", (int(shot.position.x), int(shot.position.y)), shot.radius, 1)
-                if ast.check_collision(shot):
-                    ast.kill()
-                    shot.kill()
-            
-        pygame.display.flip()
+                for shot in shots:
+                    # Draw circles around objects to visualize collision bounds
+                    # pygame.draw.circle(screen, "red", (int(ast.position.x), int(ast.position.y)), ast.radius, 1)
+                    # pygame.draw.circle(screen, "green", (int(shot.position.x), int(shot.position.y)), shot.radius, 1)
+                    if ast.check_collision(shot):
+                        ast.split()
+                        shot.kill()
+                
+            pygame.display.flip()
+        else:
+            screen.fill("Black")
+            screen.blit(text_surface, text_rect)
+            pygame.display.flip()
+
 
 
 if __name__ == "__main__":

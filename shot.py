@@ -30,3 +30,5 @@ class Shot(CircleShape):
             elif self.position.y >= 725:
                 self.velocity.y *= -1
                 self.position.y = 720
+        if self.position.x < -10 or self.position.x > 1290 or self.position.y < -10 or self.position.y > 730:
+            self.kill()
