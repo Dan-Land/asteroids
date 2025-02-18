@@ -7,10 +7,10 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius)
 
 
-
     def draw(self, screen):
-        pygame.draw.circle(screen, "white", (self.position.x, self.position.y), 12)
-        pygame.draw.circle(screen, "black", (self.position.x, self.position.y), 10)
+        pygame.draw.circle(screen, "white", (self.position.x, self.position.y), (self.radius + 2))
+        pygame.draw.circle(screen, "black", (self.position.x, self.position.y), self.radius)
+        
     
     def update(self, dt):
         use_bounce = False

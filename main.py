@@ -53,6 +53,14 @@ def main():
             if ast.check_collision(player):
                 print("Game over!")
                 sys.exit()
+
+            for shot in shots:
+                # Draw circles around objects to visualize collision bounds
+                pygame.draw.circle(screen, "red", (int(ast.position.x), int(ast.position.y)), ast.radius, 1)
+                pygame.draw.circle(screen, "green", (int(shot.position.x), int(shot.position.y)), shot.radius, 1)
+                if ast.check_collision(shot):
+                    ast.kill()
+                    shot.kill()
             
         pygame.display.flip()
 
